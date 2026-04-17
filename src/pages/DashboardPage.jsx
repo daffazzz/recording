@@ -279,8 +279,9 @@ export default function DashboardPage({ onNavigate }) {
                             <div className="card-header">
                                 <h3>📋 Data Terahir vs Standar</h3>
                             </div>
-                            <div className="card-body" style={{ padding: 0 }}>
-                                <table>
+                            <div className="card-body table-card-wrap" style={{ padding: 0 }}>
+                                <div className="table-container">
+                                    <table className="responsive-table">
                                     <thead>
                                         <tr>
                                             <th>Parameter</th>
@@ -292,49 +293,50 @@ export default function DashboardPage({ onNavigate }) {
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><strong>Body Weight</strong></td>
-                                            <td>{formatNum(convert(metrics.lastBw))} {unit === 'kg' ? 'kg' : 'g'}</td>
-                                            <td>{formatNum(convert(metrics.stdBw))} {unit === 'kg' ? 'kg' : 'g'}</td>
-                                            <td className={metrics.lastBw >= metrics.stdBw ? 'cell-highlight' : 'cell-danger'}>
+                                            <td data-label="Parameter"><strong>Body Weight</strong></td>
+                                            <td data-label="Aktual">{formatNum(convert(metrics.lastBw))} {unit === 'kg' ? 'kg' : 'g'}</td>
+                                            <td data-label="Standar">{formatNum(convert(metrics.stdBw))} {unit === 'kg' ? 'kg' : 'g'}</td>
+                                            <td data-label="Selisih" className={metrics.lastBw >= metrics.stdBw ? 'cell-highlight' : 'cell-danger'}>
                                                 {metrics.stdBw ? `${truncateNumber(((metrics.lastBw - metrics.stdBw) / metrics.stdBw * 100), 1)}%` : '-'}
                                             </td>
-                                            <td>
+                                            <td data-label="Status">
                                                 <span className={`badge ${metrics.lastBw >= metrics.stdBw ? 'badge-green' : 'badge-red'}`}>
                                                     {metrics.lastBw >= metrics.stdBw ? 'Baik' : 'Di Bawah'}
                                                 </span>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td><strong>FCR</strong></td>
-                                            <td>{metrics.lastFcr ? truncateNumber(metrics.lastFcr, 3) : '-'}</td>
-                                            <td>{metrics.stdFcr ? truncateNumber(metrics.stdFcr, 3) : '-'}</td>
-                                            <td className={metrics.lastFcr <= metrics.stdFcr ? 'cell-highlight' : 'cell-danger'}>
+                                            <td data-label="Parameter"><strong>FCR</strong></td>
+                                            <td data-label="Aktual">{metrics.lastFcr ? truncateNumber(metrics.lastFcr, 3) : '-'}</td>
+                                            <td data-label="Standar">{metrics.stdFcr ? truncateNumber(metrics.stdFcr, 3) : '-'}</td>
+                                            <td data-label="Selisih" className={metrics.lastFcr <= metrics.stdFcr ? 'cell-highlight' : 'cell-danger'}>
                                                 {metrics.stdFcr && metrics.lastFcr
                                                     ? `${truncateNumber(((metrics.lastFcr - metrics.stdFcr) / metrics.stdFcr * 100), 1)}%`
                                                     : '-'
                                                 }
                                             </td>
-                                            <td>
+                                            <td data-label="Status">
                                                 <span className={`badge ${metrics.lastFcr <= metrics.stdFcr ? 'badge-green' : 'badge-red'}`}>
                                                     {metrics.lastFcr <= metrics.stdFcr ? 'Baik' : 'Tinggi'}
                                                 </span>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Mortalitas</strong></td>
-                                            <td>{truncateNumber(metrics.mortalityRate, 2)}%</td>
-                                            <td>{'< 5%'}</td>
-                                            <td className={metrics.mortalityRate < 5 ? 'cell-highlight' : 'cell-danger'}>
+                                            <td data-label="Parameter"><strong>Mortalitas</strong></td>
+                                            <td data-label="Aktual">{truncateNumber(metrics.mortalityRate, 2)}%</td>
+                                            <td data-label="Standar">{'< 5%'}</td>
+                                            <td data-label="Selisih" className={metrics.mortalityRate < 5 ? 'cell-highlight' : 'cell-danger'}>
                                                 {truncateNumber(metrics.mortalityRate, 2)}%
                                             </td>
-                                            <td>
+                                            <td data-label="Status">
                                                 <span className={`badge ${metrics.mortalityRate < 5 ? 'badge-green' : 'badge-red'}`}>
                                                     {metrics.mortalityRate < 5 ? 'Baik' : 'Tinggi'}
                                                 </span>
                                             </td>
                                         </tr>
                                     </tbody>
-                                </table>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </>
