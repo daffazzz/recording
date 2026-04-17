@@ -69,6 +69,8 @@ body {
   background: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -77,6 +79,7 @@ body {
 .app-layout {
   display: flex;
   min-height: 100vh;
+  min-width: 0;
 }
 
 .sidebar {
@@ -216,6 +219,7 @@ body {
   margin-left: 280px;
   flex: 1;
   min-height: 100vh;
+  min-width: 0;
 }
 
 .page-header {
@@ -250,6 +254,7 @@ body {
 
 .page-body {
   padding: 24px 32px;
+  min-width: 0;
 }
 
 /* Mobile sidebar toggle */
@@ -756,6 +761,11 @@ tbody tr:last-child td {
   position: relative;
   height: 320px;
   padding: 16px;
+  min-width: 0;
+}
+
+.chart-container canvas {
+  max-width: 100% !important;
 }
 
 /* =============== MODALS =============== */
@@ -1102,6 +1112,9 @@ tbody tr:last-child td {
   font-weight: 500;
   color: var(--text-secondary);
   transition: all var(--transition-fast);
+  max-width: 100%;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .compare-checkbox:hover {
@@ -1112,6 +1125,15 @@ tbody tr:last-child td {
   accent-color: var(--accent-blue);
   width: 16px;
   height: 16px;
+  flex-shrink: 0;
+}
+
+.compare-options {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  min-width: 0;
 }
 
 /* =============== LOADING =============== */
@@ -1655,6 +1677,7 @@ tbody tr:last-child td {
   .compare-checkbox {
     font-size: 0.78rem;
     padding: 5px 10px;
+    width: 100%;
   }
 
   /* Table in recording – horizontal scroll */
