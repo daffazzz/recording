@@ -240,6 +240,14 @@ body {
   margin-top: 4px;
 }
 
+.page-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 .page-body {
   padding: 24px 32px;
 }
@@ -619,6 +627,15 @@ body {
 .table-container {
   overflow-x: auto;
   border-radius: var(--radius-md);
+  border: 1px solid var(--border-primary);
+}
+
+.table-card-wrap {
+  border-top: 1px solid var(--border-primary);
+}
+
+.responsive-table {
+  min-width: 560px;
 }
 
 table {
@@ -680,6 +697,24 @@ tbody tr:last-child td {
   font-family: inherit;
   font-size: 0.82rem;
   transition: all var(--transition-fast);
+}
+
+.recording-table th,
+.recording-table td {
+  padding: 8px 10px;
+}
+
+.recording-mobile-list {
+  display: none;
+}
+
+.recording-card-footer {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border-primary);
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .table-editable input:focus {
@@ -1492,6 +1527,10 @@ tbody tr:last-child td {
     padding: 14px 12px;
   }
 
+  .page-header-row {
+    align-items: flex-start;
+  }
+
   /* Stats 2-column */
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1581,6 +1620,12 @@ tbody tr:last-child td {
   /* Buttons full-width in header */
   .btn-group {
     flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .btn-group .btn {
+    flex: 1;
+    min-width: 130px;
   }
 
   /* Period list items */
@@ -1615,6 +1660,108 @@ tbody tr:last-child td {
   /* Table in recording – horizontal scroll */
   .table-container {
     -webkit-overflow-scrolling: touch;
+  }
+
+  .recording-table-desktop {
+    display: none;
+  }
+
+  .recording-mobile-list {
+    display: grid;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .recording-mobile-card {
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    padding: 0;
+    background: var(--bg-card);
+  }
+
+  .recording-mobile-summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 10px;
+  }
+
+  .recording-mobile-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .recording-mobile-card[open] .recording-mobile-summary {
+    border-bottom: 1px solid var(--border-primary);
+  }
+
+  .recording-mobile-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  .recording-mobile-summary-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    color: var(--text-secondary);
+    font-size: 0.74rem;
+  }
+
+  .recording-mobile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .recording-mobile-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .recording-mobile-field label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    font-weight: 600;
+  }
+
+  .recording-mobile-field input {
+    width: 100%;
+    min-width: 0;
+    padding: 8px 10px;
+    background: var(--bg-input);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 0.82rem;
+  }
+
+  .recording-mobile-field input.computed {
+    background: rgba(16, 185, 129, 0.08);
+    color: var(--accent-green);
+    border-color: rgba(16, 185, 129, 0.2);
+  }
+
+  .recording-mobile-note {
+    grid-column: span 2;
+  }
+
+  .recording-mobile-std {
+    margin: 0 10px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    color: var(--text-secondary);
+    font-size: 0.74rem;
+  }
+
+  .recording-card-footer {
+    padding: 10px;
   }
 
   /* Bottom navigation bar */
@@ -1777,5 +1924,53 @@ tbody tr:last-child td {
   .btn-sm {
     padding: 6px 12px;
     font-size: 0.76rem;
+  }
+
+  .recording-mobile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .recording-mobile-note {
+    grid-column: auto;
+  }
+
+  .responsive-table {
+    min-width: 100%;
+  }
+
+  .responsive-table thead {
+    display: none;
+  }
+
+  .responsive-table tbody,
+  .responsive-table tr,
+  .responsive-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .responsive-table tr {
+    border-bottom: 1px solid var(--border-primary);
+    padding: 8px 10px;
+  }
+
+  .responsive-table tr:last-child {
+    border-bottom: none;
+  }
+
+  .responsive-table td {
+    border: none;
+    padding: 6px 0;
+  }
+
+  .responsive-table td::before {
+    content: attr(data-label);
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+    font-weight: 600;
   }
 }
