@@ -544,6 +544,7 @@ export default function RecordingPage() {
 
                                     return (
                                         <details key={`mobile-${row.day}`} className="recording-mobile-card">
+                                        <details key={`mobile-${row.day}`} className="recording-mobile-card" open={row.day <= 7}>
                                             <summary className="recording-mobile-summary">
                                                 <div className="recording-mobile-card-head">
                                                     <span className="badge badge-blue">Hari {row.day}</span>
