@@ -543,6 +543,7 @@ export default function RecordingPage() {
                                     const fcrDiff = row.fcr && std.fcr ? ((row.fcr - std.fcr) / std.fcr * 100) : null
 
                                     return (
+                                        <details key={`mobile-${row.day}`} className="recording-mobile-card">
                                         <details key={`mobile-${row.day}`} className="recording-mobile-card" open={row.day <= 7}>
                                             <summary className="recording-mobile-summary">
                                                 <div className="recording-mobile-card-head">
