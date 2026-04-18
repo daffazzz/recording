@@ -364,7 +364,7 @@ export default function ChartsPage() {
                     <div className="card-header">
                         <h3>⚙️ Opsi Perbandingan</h3>
                     </div>
-                    <div className="card-body" style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'center' }}>
+                    <div className="card-body compare-options">
                         <label className="compare-checkbox">
                             <input
                                 type="checkbox"

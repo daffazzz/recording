@@ -240,7 +240,7 @@ export default function RecordingPage() {
     return (
         <>
             <div className="page-header">
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+                <div className="page-header-row">
                     <div>
                         <h2>📋 Input Recording</h2>
                         <p>{selectedFarm.name} {selectedPeriod ? `› ${selectedPeriod.name}` : ''}</p>
@@ -357,8 +357,8 @@ export default function RecordingPage() {
                             </div>
                         </div>
                         <div className="card-body" style={{ padding: 0 }}>
-                            <div className="table-container" style={{ maxHeight: '70vh', overflowX: 'auto', overflowY: 'auto' }}>
-                                <table className="table-editable" style={{ minWidth: 1400 }}>
+                            <div className="table-container recording-table-desktop" style={{ maxHeight: '70vh', overflowX: 'auto', overflowY: 'auto' }}>
+                                <table className="table-editable recording-table" style={{ minWidth: 1180 }}>
                                     <thead>
                                         <tr>
                                             <th style={{ position: 'sticky', left: 0, zIndex: 20, background: 'var(--bg-tertiary)', minWidth: 55 }}>Hari</th>
@@ -536,8 +536,77 @@ export default function RecordingPage() {
                                     </tbody>
                                 </table>
                             </div>
+                            <div className="recording-mobile-list">
+                                {computedRows.map((row, idx) => {
+                                    const std = row.std || {}
+                                    const bwDiff = row.bw && std.bw ? ((row.bw - std.bw) / std.bw * 100) : null
+                                    const fcrDiff = row.fcr && std.fcr ? ((row.fcr - std.fcr) / std.fcr * 100) : null
+
+                                    return (
+                                        <details key={`mobile-${row.day}`} className="recording-mobile-card">
+                                            <summary className="recording-mobile-summary">
+                                                <div className="recording-mobile-card-head">
+                                                    <span className="badge badge-blue">Hari {row.day}</span>
+                                                    <span className="badge badge-green">Pop: {(row.population || 0).toLocaleString()}</span>
+                                                </div>
+                                                <div className="recording-mobile-summary-meta">
+                                                    <span>BW: {row.bw ? convertVal(row.bw) : '-'} {unitLabel}</span>
+                                                    <span>FCR: {row.fcr ? truncateNumber(row.fcr, 3) : '-'}</span>
+                                                    <span>Feed: {row.cumFeedIntake ? convertVal(row.cumFeedIntake) : '-'} {unitLabel}</span>
+                                                </div>
+                                            </summary>
+                                            <div className="recording-mobile-grid">
+                                                <div className="recording-mobile-field">
+                                                    <label>BW ({unitLabel})</label>
+                                                    <input type="number" step="any" value={row.bw !== null && row.bw !== undefined && row.bw !== '' ? convertVal(row.bw) : ''} onChange={e => updateRow(idx, 'bw', parseInput(e.target.value))} placeholder="-" />
+                                                </div>
+                                                <div className="recording-mobile-field">
+                                                    <label>Total Pakan (Sak)</label>
+                                                    <input type="number" step="0.1" min="0" value={row.feed_sacks_added || ''} onChange={e => updateRow(idx, 'feed_sacks_added', parseFloat(e.target.value) || 0)} placeholder="0" />
+                                                </div>
+                                                <div className="recording-mobile-field">
+                                                    <label>Sisa Pakan (Sak)</label>
+                                                    <input type="number" step="0.1" min="0" value={row.feed_sacks_remaining || ''} onChange={e => updateRow(idx, 'feed_sacks_remaining', parseFloat(e.target.value) || 0)} placeholder="0" />
+                                                </div>
+                                                <div className="recording-mobile-field">
+                                                    <label>Daily Feed ({unitLabel}/ekor)</label>
+                                                    <input type="number" step="any" className={row._isComputed?.dailyFeedIntake ? 'computed' : ''} value={row._isComputed?.dailyFeedIntake ? (row.dailyFeedIntake ? convertVal(row.dailyFeedIntake) : '') : (row.manual_daily_feed_intake !== null && row.manual_daily_feed_intake !== '' ? convertVal(row.manual_daily_feed_intake) : '')} onChange={e => updateRow(idx, 'manual_daily_feed_intake', parseInput(e.target.value))} placeholder="auto" />
+                                                </div>
+                                                <div className="recording-mobile-field">
+                                                    <label>Cum Feed ({unitLabel}/ekor)</label>
+                                                    <input type="number" step="any" className={row._isComputed?.cumFeedIntake ? 'computed' : ''} value={row._isComputed?.cumFeedIntake ? (row.cumFeedIntake ? convertVal(row.cumFeedIntake) : '') : (row.manual_cum_feed_intake !== null && row.manual_cum_feed_intake !== '' ? convertVal(row.manual_cum_feed_intake) : '')} onChange={e => updateRow(idx, 'manual_cum_feed_intake', parseInput(e.target.value))} placeholder="auto" />
+                                                </div>
+                                                <div className="recording-mobile-field">
+                                                    <label>Daily Gain ({unitLabel})</label>
+                                                    <input type="number" step="any" className={row._isComputed?.dailyGain ? 'computed' : ''} value={row._isComputed?.dailyGain ? (row.dailyGain !== null ? convertVal(row.dailyGain) : '') : (row.manual_daily_gain !== null && row.manual_daily_gain !== '' ? convertVal(row.manual_daily_gain) : '')} onChange={e => updateRow(idx, 'manual_daily_gain', parseInput(e.target.value))} placeholder="auto" />
+                                                </div>
+                                                <div className="recording-mobile-field">
+                                                    <label>FCR</label>
+                                                    <input type="number" step="any" className={row._isComputed?.fcr ? 'computed' : ''} value={row._isComputed?.fcr ? (row.fcr !== null ? truncateNumber(row.fcr, 3) : '') : (row.manual_fcr !== null && row.manual_fcr !== '' ? truncateNumber(parseFloat(row.manual_fcr), 3) : '')} onChange={e => updateRow(idx, 'manual_fcr', e.target.value === '' ? null : parseFloat(e.target.value))} placeholder="auto" />
+                                                </div>
+                                                <div className="recording-mobile-field">
+                                                    <label>Deplesi</label>
+                                                    <input type="number" min="0" value={row.depletion || ''} onChange={e => updateRow(idx, 'depletion', parseInt(e.target.value) || 0)} placeholder="0" />
+                                                </div>
+                                                <div className="recording-mobile-field">
+                                                    <label>Populasi Aktual</label>
+                                                    <input type="number" min="0" value={row.current_population || ''} onChange={e => updateRow(idx, 'current_population', parseInt(e.target.value) || null)} placeholder={row.population || '-'} />
+                                                </div>
+                                                <div className="recording-mobile-field recording-mobile-note">
+                                                    <label>Catatan</label>
+                                                    <input type="text" value={row.notes || ''} onChange={e => updateRow(idx, 'notes', e.target.value)} />
+                                                </div>
+                                            </div>
+                                            <div className="recording-mobile-std">
+                                                <span>Std BW: {std.bw ? convertVal(std.bw) : '-'} {bwDiff !== null && `(${bwDiff >= 0 ? '+' : ''}${truncateNumber(bwDiff, 1)}%)`}</span>
+                                                <span>Std FCR: {std.fcr ? truncateNumber(std.fcr, 3) : '-'} {fcrDiff !== null && `(${fcrDiff >= 0 ? '+' : ''}${truncateNumber(fcrDiff, 1)}%)`}</span>
+                                            </div>
+                                        </details>
+                                    )
+                                })}
+                            </div>
                         </div>
-                        <div style={{ padding: '12px 20px', borderTop: '1px solid var(--border-primary)', display: 'flex', justifyContent: 'space-between' }}>
+                        <div className="recording-card-footer">
                             <button className="btn btn-outline btn-sm" onClick={addMoreDays}>
                                 <Plus size={14} /> Tambah 7 Hari
                             </button>
